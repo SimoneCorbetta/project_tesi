@@ -1,6 +1,5 @@
 #!/bin/bash
 
-source venv/bin/activate
 python3 clear_results.py
 
 if [ "$1" == "fav" ]; then
@@ -10,5 +9,3 @@ elif [ "$1" == "unfav" ]; then
     python3 experiment_knn_unfav.py
     python3 generate_plots_unfav.py
 fi
-
-deactivate

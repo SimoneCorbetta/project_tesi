@@ -76,8 +76,6 @@ for d in dimensions:
 # ================================
 
 df_raw = pd.DataFrame(raw_results)
-df_raw.to_csv("results/experiment_knn_fav/results.csv", index=False)
-
 # Calcolo media e deviazione standard
 df_agg = df_raw.groupby(
     ["dimension", "k", "distance"]

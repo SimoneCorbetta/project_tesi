@@ -58,6 +58,7 @@ for n in n_points_list:
                         })
 
 df_raw = pd.DataFrame(raw_results)
+
 df_agg = df_raw.groupby(
     ["n_points", "dimension", "k", "distance"]
 )["time_ms"].agg(["mean", "std"]).reset_index()

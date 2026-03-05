@@ -33,7 +33,7 @@ def plot_time_vs_k(df, folder):
     plt.ylabel("Tempo medio (ms)")
     plt.title("Tempo vs k (Iris)")
     plt.legend()
-    plt.savefig("tempo_vs_k.png", dpi=300, bbox_inches="tight")
+    plt.savefig(os.path.join(folder, "tempo_vs_valorik.png"), dpi=300, bbox_inches="tight")
     plt.clf()   # pulisce il grafico per il prossimo plot
 
 
@@ -50,7 +50,7 @@ def plot_time_vs_dimension(df, folder):
     plt.ylabel("Tempo medio (ms)")
     plt.title("Tempo vs Dimensione (Iris)")
     plt.legend()
-    plt.savefig("tempo_vs_dimensione.png", dpi=300, bbox_inches="tight")
+    plt.savefig(os.path.join(folder, "tempo_vs_dimensione.png"), dpi=300, bbox_inches="tight")
     plt.clf()   # pulisce il grafico per il prossimo plot
 
 

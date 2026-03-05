@@ -1,0 +1,11 @@
+comandi per bash:
+chmod +x run.sh
+./run.sh fav o ./run.sh unfav
+
+fav e' Iris
+unfav e' MNIST
+
+comandi per git:
+git add .
+git commit -m "Descrizione modifiche"
+git push
