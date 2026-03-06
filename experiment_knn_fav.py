@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import time
 from sklearn.datasets import load_iris
-from knn import *
+from algoritm_knn import *
 import matplotlib.pyplot as plt
 
 # Impostiamo il seed per garantire riproducibilità

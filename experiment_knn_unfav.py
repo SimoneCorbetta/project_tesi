@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import time
 from sklearn.datasets import fetch_openml
-from knn import *
+from algoritm_knn import *
 
 np.random.seed(42)
 
