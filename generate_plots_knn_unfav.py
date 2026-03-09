@@ -26,7 +26,7 @@ def plot_time_vs_points(df, folder):
 
     for dist in subset["distance"].unique():
         data = subset[subset["distance"] == dist]
-        plt.plot(data["n_points"], data["mean"], label=dist)
+        plt.plot(data["n_points"], data["mean_time"], label=dist)
 
     plt.xlabel("Numero punti")
     plt.ylabel("Tempo medio (ms)")
@@ -43,7 +43,7 @@ def plot_time_vs_dimension(df, folder):
 
     for dist in subset["distance"].unique():
         data = subset[subset["distance"] == dist]
-        plt.plot(data["dimension"], data["mean"], label=dist)
+        plt.plot(data["dimension"], data["mean_time"], label=dist)
 
     plt.xlabel("Dimensione")
     plt.ylabel("Tempo medio (ms)")

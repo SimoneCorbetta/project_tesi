@@ -99,8 +99,8 @@ def experiment_knn_unfav():
                         "dimension": d,
                         "k": k,
                         "distance": dist_name,
-                        "mean_time_ms": np.mean(times),
-                        "std_time_ms": np.std(times),
+                        "mean_time": np.mean(times),
+                        "std_time": np.std(times),
                         "accuracy": acc
                     })
 
@@ -109,13 +109,13 @@ def experiment_knn_unfav():
     df_agg = df_raw.groupby(
     ["n_points", "dimension", "k", "distance"]
     ).agg(
-        mean_time=("time_ms", "mean"),
-        std_time=("time_ms", "std"),
+        mean_time=("mean_time", "mean"),
+        std_time=("std_time", "std"),
         accuracy=("accuracy", "mean")
     ).reset_index()
 
     df_agg.columns = [
-        "n_points"
+        "n_points",
         "dimension",
         "k",
         "distance",
