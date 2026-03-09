@@ -6,10 +6,11 @@ folders = [
     "results/experiment_knn_unfav"
 ]
 
-for folder in folders:
-    file_path = os.path.join(folder, "aggregated_results.csv")
+def clear_results():
+    for folder in folders:
+        file_path = os.path.join(folder, "aggregated_results.csv")
 
-    with open(file_path, "w") as f:
-        f.write("query_point,k,distance,neighbors,time\n")
+        with open(file_path, "w") as f:
+            f.write("query_point,k,distance,neighbors,time\n")
 
-print("Tutti i file dei risultati sono stati svuotati.")
+    print("Tutti i file dei risultati sono stati svuotati.")
