@@ -54,8 +54,7 @@ def plot_time_vs_dimension(df, folder):
     plt.clf()
 
 
-def main():
-
+def generate_plots_knn_unfav():
     df = pd.read_csv(RESULTS_FILE)
 
     experiment_folder = create_experiment_folder()
@@ -64,8 +63,3 @@ def main():
     plot_time_vs_dimension(df, experiment_folder)
 
     print(f"Grafici salvati in: {experiment_folder}")
-
-
-if __name__ == "__main__":
-    main()
-    
