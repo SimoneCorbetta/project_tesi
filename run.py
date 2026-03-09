@@ -3,6 +3,8 @@ import sys
 from clear_results import *
 from experiment_knn_fav import *
 from experiment_knn_unfav import *
+from generate_plots_knn_fav import *
+from generate_plots_knn_unfav import *
 
 clear_results()
 if (sys.argv[1] == "k_iris"):
@@ -20,4 +22,4 @@ elif (sys.argv[1] == "a_mnist"):
     # python3 generate_plots_ann.py
     pass
 else:
-    assert(false)
+    assert(False)
