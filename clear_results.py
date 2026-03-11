@@ -3,7 +3,8 @@ import os
 #da modificare, aggiungere anche i test legati all'algoritmo ann
 folders = [
     "results/experiment_knn_fav",
-    "results/experiment_knn_unfav"
+    "results/experiment_knn_unfav",
+    "results/experiment_ann"
 ]
 
 def clear_results():

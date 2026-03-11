@@ -1,8 +1,12 @@
 codice del capitolo 2 concluso, iniziare codice capitolo 3 fine marzo
 
 modifiche:
-    1 
-    2 
-    3 
-    4 
-    5 
+    1 rileggere e capire i file:
+        algoritm_ann.py,
+        clear_results.py, 
+        experiment_ann.py, 
+        generate_plots_ann.py
+    2 algoritmo basta solo capirlo, visto che e' quello
+    3 clear_results vedere se ritorna gli stessi dati se no fare una funzione diversa per pulire i file
+    4 experiment_ann, dopo aver capito l'algoritmo e vedere che dati ritorna, modificare il salvataggio dei dati e possibilmente vedere come gestirli
+    5 in generate_plots_ann scritto sul file le modifiche da fare
