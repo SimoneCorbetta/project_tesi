@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 
 RESULTS_FILE = "results/experiment_knn_unfav/aggregated_results.csv"
 BASE_DIR = "results/experiment_knn_unfav"
@@ -20,58 +21,154 @@ def create_experiment_folder():
     return folder
 
 
+# ===============================
+# TEMPO vs NUMERO PUNTI
+# ===============================
+
 def plot_time_vs_points(df, folder):
 
-    subset = df[(df["dimension"] == 784) & (df["k"] == 5)]
+    plt.style.use("seaborn-v0_8")
 
-    for dist in subset["distance"].unique():
-        data = subset[subset["distance"] == dist]
-        plt.plot(data["n_points"], data["mean_time"], label=dist)
+    for dim in df["dimension"].unique():
+        for k_val in df["k"].unique():
 
-    plt.xlabel("Numero punti")
-    plt.ylabel("Tempo medio (ms)")
-    plt.title("Tempo vs Numero punti (MNIST)")
-    plt.legend()
+            subset = df[(df["dimension"] == dim) & (df["k"] == k_val)]
 
-    plt.savefig(os.path.join(folder, "tempo_vs_punti.png"), dpi=300, bbox_inches="tight")
-    plt.clf()
+            if subset.empty:
+                continue
 
+            n_points = sorted(subset["n_points"].unique())
+            distances = subset["distance"].unique()
+
+            x = np.arange(len(n_points))
+            width = 0.25
+
+            for i, dist in enumerate(distances):
+
+                data = subset[subset["distance"] == dist].sort_values("n_points")
+
+                plt.bar(
+                    x + i * width,
+                    data["mean_time"],
+                    width=width,
+                    label=dist
+                )
+
+            plt.xlabel("Numero punti")
+            plt.ylabel("Tempo medio (ms)")
+            plt.title(f"Tempo vs Numero punti (dim={dim}, k={k_val})")
+            plt.xticks(x + width, n_points)
+            plt.legend()
+
+            plt.savefig(
+                os.path.join(folder, f"tempo_vs_punti_dim_{dim}_k_{k_val}.png"),
+                dpi=300,
+                bbox_inches="tight"
+            )
+
+            plt.clf()
+
+
+# ===============================
+# TEMPO vs DIMENSIONE
+# ===============================
 
 def plot_time_vs_dimension(df, folder):
 
-    subset = df[(df["n_points"] == 5000) & (df["k"] == 5)]
+    plt.style.use("seaborn-v0_8")
 
-    for dist in subset["distance"].unique():
-        data = subset[subset["distance"] == dist]
-        plt.plot(data["dimension"], data["mean_time"], label=dist)
+    for n in df["n_points"].unique():
+        for k_val in df["k"].unique():
 
-    plt.xlabel("Dimensione")
-    plt.ylabel("Tempo medio (ms)")
-    plt.title("Tempo vs Dimensione (MNIST)")
-    plt.legend()
+            subset = df[(df["n_points"] == n) & (df["k"] == k_val)]
 
-    plt.savefig(os.path.join(folder, "tempo_vs_dimensione.png"), dpi=300, bbox_inches="tight")
-    plt.clf()
+            if subset.empty:
+                continue
 
+            dims = sorted(subset["dimension"].unique())
+            distances = subset["distance"].unique()
+
+            x = np.arange(len(dims))
+            width = 0.25
+
+            for i, dist in enumerate(distances):
+
+                data = subset[subset["distance"] == dist].sort_values("dimension")
+
+                plt.bar(
+                    x + i * width,
+                    data["mean_time"],
+                    width=width,
+                    label=dist
+                )
+
+            plt.xlabel("Dimensione")
+            plt.ylabel("Tempo medio (ms)")
+            plt.title(f"Tempo vs Dimensione (n={n}, k={k_val})")
+            plt.xticks(x + width, dims)
+            plt.legend()
+
+            plt.savefig(
+                os.path.join(folder, f"tempo_vs_dimensione_n_{n}_k_{k_val}.png"),
+                dpi=300,
+                bbox_inches="tight"
+            )
+
+            plt.clf()
+
+
+# ===============================
+# K vs ACCURATEZZA
+# ===============================
 
 def plot_k_vs_accuratezza(df, folder):
 
-    subset = df[df["dimension"] == 784]
-
-    for dist in subset["distance"].unique():
-        data = subset[subset["distance"] == dist]
-        plt.plot(data["k"], data["accuracy"], marker="o", label=dist)
-
     plt.style.use("seaborn-v0_8")
-    plt.xlabel("Valori k")
-    plt.ylabel("Accuratezza")
-    plt.title("Valori k vs Accuratezza(Iris)")
-    plt.legend()
-    plt.savefig(os.path.join(folder, "valorik_vs_accuratezza.png"), dpi=300, bbox_inches="tight")
-    plt.clf()   # pulisce il grafico per il prossimo plot
 
+    for dim in df["dimension"].unique():
+
+        subset = df[df["dimension"] == dim]
+
+        k_vals = sorted(subset["k"].unique())
+        distances = subset["distance"].unique()
+
+        x = np.arange(len(k_vals))
+        width = 0.25
+
+        for i, dist in enumerate(distances):
+
+            data = subset[subset["distance"] == dist].sort_values("k")
+            # media accuracy per ogni k
+            grouped = data.groupby("k")["accuracy"].mean().reindex(k_vals)
+
+            plt.bar(
+                x + i * width,
+                grouped.values,
+                width=width,
+                label=dist
+            )
+
+        plt.xlabel("Valori k")
+        plt.ylabel("Accuratezza")
+        plt.title(f"k vs Accuratezza (dimensione = {dim})")
+        plt.xticks(x + width, k_vals)
+        plt.legend()
+
+        plt.savefig(
+            os.path.join(folder, f"k_vs_accuracy_dim_{dim}.png"),
+            dpi=300,
+            bbox_inches="tight"
+        )
+
+        plt.clf()
+
+
+# ===============================
+# GENERAZIONE GRAFICI
+# ===============================
 
 def generate_plots_knn_unfav():
+
     df = pd.read_csv(RESULTS_FILE)
 
     experiment_folder = create_experiment_folder()

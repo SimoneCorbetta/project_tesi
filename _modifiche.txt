@@ -1,8 +1,8 @@
-modifiche pensate 06/03/2026
-    1: per experiment_knn_fav e unfav modificare il codice in modo da calcolare l'accuratezza per preparare il grafo k vs accuratezza
-    2: in generate_plots_fav e unfav inserire il grafico k vs accuratezza
-    3: visto che i grafici venogo creati basandoci su singoli elementi, esempio un solo k o dimensione e cosi via
-        dare la possibilita' di creare per ogni valore un grafico (forse, parlarne con professoressa)
+codice del capitolo 2 concluso, iniziare codice capitolo 3 fine marzo
 
-modifiche successive riportarle quando ho finito le modifiche del 06/03
-    modifiche successive riguardano l'algoritmo legato alla ricerca dei vicini approssimata (ANN) -> uso probabilmente HNSW
+modifiche:
+    1 
+    2 
+    3 
+    4 
+    5 
