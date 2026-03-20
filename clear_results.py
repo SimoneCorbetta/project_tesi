@@ -1,6 +1,7 @@
 import os
 
 #da modificare, aggiungere anche i test legati all'algoritmo ann
+#modifiche riguardo i contenuti e i valori dei risultati riportati per ogni esperimento in ann
 folders = [
     "results/experiment_knn_fav",
     "results/experiment_knn_unfav",

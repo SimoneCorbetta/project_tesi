@@ -105,9 +105,4 @@ def save_results(results):
         ])
 
         writer.writerows(results)
-
-
-if __name__ == "__main__":
-
-    run_experiment()
  
