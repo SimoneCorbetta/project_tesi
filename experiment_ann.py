@@ -94,7 +94,7 @@ def run_experiment():
 
 def save_results(results):
 
-    with open("aggregated_results.csv", "w", newline="") as f:
+    with open("results/experiment_ann/aggregated_results.csv", "w", newline="") as f:
 
         writer = csv.writer(f)
 
