@@ -20,3 +20,4 @@ elif (sys.argv[1] == "ann"):
     generate_plots_ann()
 else:
     assert(False)
+clear_results()

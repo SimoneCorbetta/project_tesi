@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import os
 import numpy as np
 
+
 RESULTS_FILE = "results/experiment_ann/aggregated_results.csv"
 BASE_DIR = "results/experiment_ann"
 
@@ -25,7 +26,6 @@ def load_data():
     return pd.read_csv(RESULTS_FILE)
 
 
-# 🔹 TEMPO vs ACCURACY (bar chart)
 def plot_time_vs_accuracy(df, folder):
 
     plt.style.use("seaborn-v0_8")
@@ -56,7 +56,6 @@ def plot_time_vs_accuracy(df, folder):
     plt.clf()
 
 
-# 🔹 efSearch vs Accuracy (MOLTO IMPORTANTE per ANN)
 def plot_efsearch_vs_accuracy(df, folder):
 
     plt.style.use("seaborn-v0_8")
@@ -87,7 +86,6 @@ def plot_efsearch_vs_accuracy(df, folder):
     plt.clf()
 
 
-# 🔹 efSearch vs Search Time
 def plot_efsearch_vs_time(df, folder):
 
     plt.style.use("seaborn-v0_8")
