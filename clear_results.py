@@ -1,5 +1,6 @@
 import os
 
+# array che contiene i percorsi delle cartelle degli esperimenti, divisi per algoritmo e dataset
 folders = [
     "results/experiment_knn_fav",
     "results/experiment_knn_unfav",
