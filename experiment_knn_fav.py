@@ -31,7 +31,9 @@ def experiment_knn_fav():
         "cosine": cosine
        }
 
-    # Parametri sperimentali, qui i parametri possono essere modificati per fare altre prove con altri dati
+    # Parametri sperimentali, qui i parametri 
+    # possono essere modificati per fare altre 
+    # prove con altri dati
     k_values = [1, 3, 5, 10]
     dimensions = [2, 3, 4]   # utilizziamo le prime d feature
 
@@ -108,5 +110,13 @@ def experiment_knn_fav():
     ]
 
     df_agg.to_csv("results/experiment_knn_fav/aggregated_results.csv", index=False)
+    
+    df = pd.DataFrame(
+        iris.data,
+        columns=iris.feature_names
+    )
+    df["target"] = iris.target
+
+    df.to_csv("results/experiment_knn_fav/targets.csv", index=False)
 
     print("Esperimenti Iris completati.")

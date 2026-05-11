@@ -16,6 +16,7 @@ from experiment_ann import *
 #   4 ripulisco i file dai dati dell'esperimento appena svolto in modo che non ci siano salvataggi di file con una quantita' di dati inutili
 
 clear_results()
+clear_target_file()
 if (sys.argv[1] == "k_iris"):
     experiment_knn_fav()
     generate_plots_knn_fav()
@@ -27,4 +28,3 @@ elif (sys.argv[1] == "ann"):
     generate_plots_ann()
 else:
     assert(False)
-clear_results()

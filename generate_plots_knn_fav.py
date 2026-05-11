@@ -4,7 +4,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 RESULTS_FILE = "results/experiment_knn_fav/aggregated_results.csv"
+TARGET_FILE = pd.read_csv("results/experiment_knn_fav/targets.csv")
 BASE_DIR = "results/experiment_knn_fav"
+TARGET_NAMES = ["Iris setosa", "Iris versicolor", "Iris virginica"]
 
 
 def create_experiment_folder():
@@ -25,7 +27,6 @@ def plot_time_vs_k(df, folder):
 
     plt.style.use("seaborn-v0_8")
 
-    # ciclo su ogni dimensione presente nel dataframe
     for dim in df["dimension"].unique():
 
         subset = df[df["dimension"] == dim]
@@ -35,6 +36,8 @@ def plot_time_vs_k(df, folder):
 
         x = np.arange(len(k_values))
         width = 0.25
+
+        plt.figure(figsize=(8, 5))
 
         for i, dist in enumerate(distances):
 
@@ -50,8 +53,10 @@ def plot_time_vs_k(df, folder):
         plt.xlabel("Valore di k")
         plt.ylabel("Tempo medio (ms)")
         plt.title(f"Tempo vs k (dimensione = {dim})")
+
         plt.xticks(x + width, k_values)
         plt.legend()
+        plt.grid(axis="y", linestyle="--", alpha=0.6)
 
         plt.savefig(
             os.path.join(folder, f"tempo_vs_k--dim_{dim}.png"),
@@ -59,8 +64,7 @@ def plot_time_vs_k(df, folder):
             bbox_inches="tight"
         )
 
-        plt.clf()  # pulisce il grafico per il prossimo
-
+        plt.clf()
 
 def plot_time_vs_dimension(df, folder):
 
@@ -141,14 +145,109 @@ def plot_k_vs_accuratezza(df, folder):
 
         plt.clf()
 
+# =========================
+# 1. ISTOGRAMMA CLASSI
+# =========================
+def plot_class_distribution(df, folder):
+
+    os.makedirs(folder, exist_ok=True)
+
+    plt.figure(figsize=(7, 5))
+
+    counts = df["target"].value_counts().sort_index()
+
+    plt.bar(counts.index, counts.values)
+
+    plt.xlabel("Classe")
+    plt.ylabel("Numero campioni")
+    plt.title("Distribuzione delle classi - Iris")
+
+    plt.xticks([0, 1, 2])
+
+    plt.grid(axis="y", linestyle="--", alpha=0.5)
+
+    plt.savefig(
+        os.path.join(folder, "hist_classes_iris.png"),
+        dpi=300,
+        bbox_inches="tight"
+    )
+
+    plt.clf()
+
+
+# =========================
+# 2. BOXPLOT FEATURE
+# =========================
+def plot_boxplot_feature(df, feature, target_names, folder):
+
+    os.makedirs(folder, exist_ok=True)
+
+    plt.figure(figsize=(8, 6))
+
+    df.boxplot(
+        column=feature,
+        by="target",
+        grid=True
+    )
+
+    plt.xticks([1, 2, 3], target_names)
+
+    plt.xlabel("Classe")
+    plt.ylabel(feature)
+    plt.title(f"Boxplot {feature} per classe")
+
+    plt.suptitle("")
+
+    plt.savefig(
+        os.path.join(folder, f"boxplot_{feature.replace(' ', '_')}.png"),
+        dpi=300,
+        bbox_inches="tight"
+    )
+
+    plt.clf()
+
+
+# =========================
+# 3. SCATTER MATRIX
+# =========================
+
+def plot_scatter_matrix(df, folder):
+
+    os.makedirs(folder, exist_ok=True)
+
+    plt.figure(figsize=(12, 12))
+
+    pd.plotting.scatter_matrix(
+        df.drop(columns=["target"]),
+        figsize=(12, 12),
+        diagonal="hist",
+        alpha=0.7
+    )
+
+    plt.suptitle("Scatter Matrix Dataset Iris")
+
+    plt.savefig(
+        os.path.join(folder, "scatter_matrix_iris.png"),
+        dpi=300,
+        bbox_inches="tight"
+    )
+
+    plt.clf()
+
 
 def generate_plots_knn_fav():
     df = pd.read_csv(RESULTS_FILE)
 
     experiment_folder = create_experiment_folder()
 
+    # grafici già esistenti
     plot_time_vs_k(df, experiment_folder)
     plot_time_vs_dimension(df, experiment_folder)
     plot_k_vs_accuratezza(df, experiment_folder)
+
+    # nuovi grafici Iris (dataset analysis)
+    plot_class_distribution(TARGET_FILE, experiment_folder)
+    plot_boxplot_feature(TARGET_FILE, "petal length (cm)", TARGET_NAMES, experiment_folder)
+    plot_scatter_matrix(TARGET_FILE, experiment_folder)
 
     print(f"Grafici salvati in: {experiment_folder}")

@@ -29,3 +29,16 @@ def clear_results():
                 f.write("query_point,k,distance,neighbors,time\n")
 
     print("Tutti i file dei risultati sono stati svuotati.")
+
+def clear_target_file():
+    for folder in folders:
+
+        file_path = os.path.join(folder, "targets.csv")
+
+        os.makedirs(folder, exist_ok=True)
+
+        # sovrascrive il file con solo intestazione
+        with open(file_path, "w") as f:
+            f.write("sepal length (cm),sepal width (cm),petal length (cm),petal width (cm),target\n")
+
+    print("File target.csv svuotato correttamente.")
