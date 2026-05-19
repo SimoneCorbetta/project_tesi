@@ -109,7 +109,7 @@ def experiment_knn_fav():
         "accuracy"
     ]
 
-    df_agg.to_csv("results/experiment_knn_fav/aggregated_results.csv", index=False)
+    df_agg.to_csv("results/aggregated_results.csv", index=False)
     
     df = pd.DataFrame(
         iris.data,
@@ -117,6 +117,6 @@ def experiment_knn_fav():
     )
     df["target"] = iris.target
 
-    df.to_csv("results/experiment_knn_fav/targets.csv", index=False)
+    df.to_csv("results/targets.csv", index=False)
 
     print("Esperimenti Iris completati.")

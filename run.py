@@ -17,10 +17,10 @@ from experiment_ann import *
 
 clear_results()
 clear_target_file()
-if (sys.argv[1] == "k_iris"):
+if (sys.argv[1] == "iris"):
     experiment_knn_fav()
     generate_plots_knn_fav()
-elif (sys.argv[1] == "k_mnist"):
+elif (sys.argv[1] == "mnist"):
     experiment_knn_unfav()
     generate_plots_knn_unfav()
 elif (sys.argv[1] == "ann"):
@@ -28,3 +28,4 @@ elif (sys.argv[1] == "ann"):
     generate_plots_ann()
 else:
     assert(False)
+clear_target_file()

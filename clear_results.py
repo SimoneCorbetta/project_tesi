@@ -1,44 +1,37 @@
 import os
-
-# array che contiene i percorsi delle cartelle degli esperimenti, divisi per algoritmo e dataset
-folders = [
-    "results/experiment_knn_fav",
-    "results/experiment_knn_unfav",
-    "results/experiment_ann"
-]
+import sys
 
 
 def clear_results():
-
-    for folder in folders:
-
-        file_path = os.path.join(folder, "aggregated_results.csv")
+    experiment = sys.argv[1] 
+    file_path = os.path.join("./results/", "aggregated_results.csv")
 
         # controllo sicurezza: crea il file se non esiste
-        os.makedirs(folder, exist_ok=True)
+    os.makedirs("./results/", exist_ok=True)
 
-        with open(file_path, "w") as f:
+    with open(file_path, "w") as f:
 
-            # intestazioni diverse per ANN
-            if "experiment_ann" in folder:
-
-                f.write("efSearch,search_time,accuracy\n")
-
-            else:
-
-                f.write("query_point,k,distance,neighbors,time\n")
-
+        # intestazioni diverse per ANN
+        if "ann" in experiment:
+            f.write("efSearch,search_time,accuracy\n")
+        else:
+            f.write("query_point,k,distance,neighbors,time\n")
     print("Tutti i file dei risultati sono stati svuotati.")
 
 def clear_target_file():
-    for folder in folders:
+    experiment = sys.argv[1]  # "iris", "mnist" oppure "ann"
+    headers = {
+        "iris": "sepal length (cm),sepal width (cm),petal length (cm),petal width (cm),target\n",
+        "mnist": "pixel_values,target\n",
+        "ann": "pixel_values,target\n"
+    }
+    if experiment not in headers:
+        raise ValueError("Esperimento non valido. Usa 'iris' oppure 'mnist'.")
 
-        file_path = os.path.join(folder, "targets.csv")
+    file_path = os.path.join("./results/", "targets.csv")
+    os.makedirs("./results/", exist_ok=True)
+    # sovrascrive il file con solo intestazione
+    with open(file_path, "w") as f:
+        f.write(headers[experiment])
 
-        os.makedirs(folder, exist_ok=True)
-
-        # sovrascrive il file con solo intestazione
-        with open(file_path, "w") as f:
-            f.write("sepal length (cm),sepal width (cm),petal length (cm),petal width (cm),target\n")
-
-    print("File target.csv svuotato correttamente.")
+    print(f"File targets.csv svuotato correttamente per {experiment}.")

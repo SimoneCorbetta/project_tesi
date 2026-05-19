@@ -3,8 +3,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
-RESULTS_FILE = "results/experiment_knn_fav/aggregated_results.csv"
-TARGET_FILE = pd.read_csv("results/experiment_knn_fav/targets.csv")
+RESULTS_FILE = "results/aggregated_results.csv"
+TARGET_FILE = "results/targets.csv"
 BASE_DIR = "results/experiment_knn_fav"
 TARGET_NAMES = ["Iris setosa", "Iris versicolor", "Iris virginica"]
 
@@ -145,9 +145,6 @@ def plot_k_vs_accuratezza(df, folder):
 
         plt.clf()
 
-# =========================
-# 1. ISTOGRAMMA CLASSI
-# =========================
 def plot_class_distribution(df, folder):
 
     os.makedirs(folder, exist_ok=True)
@@ -175,9 +172,6 @@ def plot_class_distribution(df, folder):
     plt.clf()
 
 
-# =========================
-# 2. BOXPLOT FEATURE
-# =========================
 def plot_boxplot_feature(df, feature, target_names, folder):
 
     os.makedirs(folder, exist_ok=True)
@@ -207,10 +201,6 @@ def plot_boxplot_feature(df, feature, target_names, folder):
     plt.clf()
 
 
-# =========================
-# 3. SCATTER MATRIX
-# =========================
-
 def plot_scatter_matrix(df, folder):
 
     os.makedirs(folder, exist_ok=True)
@@ -237,6 +227,7 @@ def plot_scatter_matrix(df, folder):
 
 def generate_plots_knn_fav():
     df = pd.read_csv(RESULTS_FILE)
+    df_targets = pd.read_csv(TARGET_FILE)
 
     experiment_folder = create_experiment_folder()
 
@@ -246,8 +237,8 @@ def generate_plots_knn_fav():
     plot_k_vs_accuratezza(df, experiment_folder)
 
     # nuovi grafici Iris (dataset analysis)
-    plot_class_distribution(TARGET_FILE, experiment_folder)
-    plot_boxplot_feature(TARGET_FILE, "petal length (cm)", TARGET_NAMES, experiment_folder)
-    plot_scatter_matrix(TARGET_FILE, experiment_folder)
+    plot_class_distribution(df_targets, experiment_folder)
+    plot_boxplot_feature(df_targets, "petal length (cm)", TARGET_NAMES, experiment_folder)
+    plot_scatter_matrix(df_targets, experiment_folder)
 
     print(f"Grafici salvati in: {experiment_folder}")

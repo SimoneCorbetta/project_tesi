@@ -124,6 +124,14 @@ def experiment_knn_unfav():
         "accuracy"
     ]
 
-    df_agg.to_csv("results/experiment_knn_unfav/aggregated_results.csv", index=False)
+    df_agg.to_csv("results/aggregated_results.csv", index=False)
+
+    df_targets = pd.DataFrame(X_full)
+    df_targets.columns = [
+        f"pixel_{i}"
+        for i in range(X_full.shape[1])
+    ]
+    df_targets["target"] = y_full
+    df_targets.to_csv("results/targets.csv", index=False)
 
     print("Esperimenti MNIST completati.")

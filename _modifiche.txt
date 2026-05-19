@@ -1,4 +1,7 @@
-codice del capitolo 2 concluso, iniziare codice capitolo 3 fine marzo
+da modificare file di generazione grafici (target), documentarsi bene e rivedere gli ultimi grafi
+    plot_class_distribution -> possibilita' di toglierlo
+    plot_boxplot_feature -> capire il grafo
+    plot_scatter_matrix -> sicuro tenerlo, ma anche questo capirlo
 
 modifiche:
     1 rileggere e capire i file:
