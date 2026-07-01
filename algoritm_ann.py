@@ -16,15 +16,21 @@ class HNSWNode:
 
 class HNSW:
 
-    def __init__(self, M=5, M_max=10, efConstruction=100, mL=1/math.log(5)):
+    def __init__(self, M=5, M_max=None, efConstruction=100, mL=None):
 
         self.M = M
+
+        if M_max is None:
+            M_max = 2 * M
         self.M_max = M_max
+
         self.efConstruction = efConstruction
+
+        if mL is None:
+            mL = 1 / math.log(M)
         self.mL = mL
 
         self.nodes = {}
-
         self.entry_point = None
         self.max_layer = -1
         self.dim = None
@@ -158,3 +164,4 @@ class HNSW:
         res = self.greedy_search(query, ep, efSearch, 0)
 
         return res[:k]
+    

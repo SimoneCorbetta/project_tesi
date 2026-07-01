@@ -13,7 +13,7 @@ def clear_results():
 
         # intestazioni diverse per ANN
         if "ann" in experiment:
-            f.write("efSearch,search_time,accuracy\n")
+            f.write("M,efConstruction,k,efSearch,search_time,accuracy\n")
         else:
             f.write("query_point,k,distance,neighbors,time\n")
     print("Tutti i file dei risultati sono stati svuotati.")

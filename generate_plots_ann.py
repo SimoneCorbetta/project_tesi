@@ -4,14 +4,12 @@ import os
 import numpy as np
 
 
-RESULTS_FILE = "results/experiment_ann/aggregated_results.csv"
+RESULTS_FILE = "results/aggregated_results.csv"
 BASE_DIR = "results/experiment_ann"
 
 
 def create_experiment_folder():
-    """
-    crea automaticamente experiment_1, experiment_2, ...
-    """
+
     i = 1
     while os.path.exists(os.path.join(BASE_DIR, f"experiment_{i}")):
         i += 1
@@ -26,140 +24,163 @@ def load_data():
     return pd.read_csv(RESULTS_FILE)
 
 
-def plot_time_vs_accuracy(df, folder):
+def get_grouped(df, group_by):
+    return df.groupby(group_by, as_index=False).mean(numeric_only=True)
+
+
+def plot_recall_vs_time(df, folder, group_by):
 
     plt.style.use("seaborn-v0_8")
+    plt.figure(figsize=(8, 6))
 
-    grouped = df.groupby("efSearch").mean().reset_index()
+    for value in sorted(df[group_by].unique()):
 
-    x = np.arange(len(grouped["efSearch"]))
+        subset = df[df[group_by] == value]
+        grouped = subset.groupby("efSearch", as_index=False).mean(numeric_only=True)
 
-    plt.figure()
-
-    plt.bar(
-        x,
-        grouped["accuracy"]
-    )
+        plt.plot(
+            grouped["search_time"],
+            grouped["accuracy"],
+            marker="o",
+            label=f"{group_by}={value}"
+        )
 
     plt.xlabel("Search Time (s)")
-    plt.ylabel("Accuracy")
-    plt.title("Time vs Accuracy")
-
-    plt.xticks(x, [f"{t:.4f}" for t in grouped["search_time"]], rotation=45)
+    plt.ylabel("Recall")
+    plt.title(f"Recall vs Search Time ({group_by})")
+    plt.legend()
+    plt.grid(True)
 
     plt.savefig(
-        os.path.join(folder, "time_vs_accuracy.png"),
+        os.path.join(folder, f"recall_vs_time_{group_by}.png"),
         dpi=300,
         bbox_inches="tight"
     )
 
-    plt.clf()
+    plt.close()
 
 
-def plot_efsearch_vs_accuracy(df, folder):
+def plot_recall_vs_efsearch(df, folder, group_by):
 
     plt.style.use("seaborn-v0_8")
+    plt.figure(figsize=(8, 6))
 
-    grouped = df.groupby("efSearch").mean().reset_index()
+    for value in sorted(df[group_by].unique()):
 
-    x = np.arange(len(grouped["efSearch"]))
+        subset = df[df[group_by] == value]
+        grouped = subset.groupby("efSearch", as_index=False).mean(numeric_only=True)
 
-    plt.figure()
-
-    plt.bar(
-        x,
-        grouped["accuracy"]
-    )
+        plt.plot(
+            grouped["efSearch"],
+            grouped["accuracy"],
+            marker="o",
+            label=f"{group_by}={value}"
+        )
 
     plt.xlabel("efSearch")
-    plt.ylabel("Accuracy")
-    plt.title("efSearch vs Accuracy")
-
-    plt.xticks(x, grouped["efSearch"])
+    plt.ylabel("Recall")
+    plt.title(f"Recall vs efSearch ({group_by})")
+    plt.legend()
+    plt.grid(True)
 
     plt.savefig(
-        os.path.join(folder, "efsearch_vs_accuracy.png"),
+        os.path.join(folder, f"recall_vs_efsearch_{group_by}.png"),
         dpi=300,
         bbox_inches="tight"
     )
 
-    plt.clf()
+    plt.close()
 
 
-def plot_efsearch_vs_time(df, folder):
+def plot_time_vs_efsearch(df, folder, group_by):
 
     plt.style.use("seaborn-v0_8")
+    plt.figure(figsize=(8, 6))
 
-    grouped = df.groupby("efSearch").mean().reset_index()
+    for value in sorted(df[group_by].unique()):
 
-    x = np.arange(len(grouped["efSearch"]))
+        subset = df[df[group_by] == value]
+        grouped = subset.groupby("efSearch", as_index=False).mean(numeric_only=True)
 
-    plt.figure()
-
-    plt.bar(
-        x,
-        grouped["search_time"]
-    )
+        plt.plot(
+            grouped["efSearch"],
+            grouped["search_time"],
+            marker="o",
+            label=f"{group_by}={value}"
+        )
 
     plt.xlabel("efSearch")
     plt.ylabel("Search Time (s)")
-    plt.title("efSearch vs Search Time")
-
-    plt.xticks(x, grouped["efSearch"])
+    plt.title(f"Search Time vs efSearch ({group_by})")
+    plt.legend()
+    plt.grid(True)
 
     plt.savefig(
-        os.path.join(folder, "efsearch_vs_time.png"),
+        os.path.join(folder, f"time_vs_efsearch_{group_by}.png"),
         dpi=300,
         bbox_inches="tight"
     )
 
-    plt.clf()
+    plt.close()
 
+"""
+def plot_avg_accuracy(df, folder, group_by):
 
-def plot_recall_vs_time(df, folder):
+    grouped = df.groupby(group_by)["accuracy"].mean().reset_index()
 
-    plt.style.use("seaborn-v0_8")
+    plt.figure(figsize=(7, 5))
 
-    grouped = df.groupby("efSearch").mean().reset_index()
+    plt.bar(grouped[group_by].astype(str), grouped["accuracy"])
 
-    plt.figure()
-
-    # grafico a linea (meglio per curve ANN)
-    plt.plot(
-        grouped["search_time"],
-        grouped["accuracy"],
-        marker='o'
-    )
-
-    plt.xlabel("Search Time (s)")
-    plt.ylabel("Recall (Accuracy)")
-    plt.title("Recall vs Search Time")
-
-    # opzionale: annota i punti con efSearch
-    for i, ef in enumerate(grouped["efSearch"]):
-        plt.annotate(
-            str(ef),
-            (grouped["search_time"][i], grouped["accuracy"][i])
-        )
+    plt.xlabel(group_by)
+    plt.ylabel("Average Recall")
+    plt.title(f"Average Recall vs {group_by}")
+    plt.grid(axis="y")
 
     plt.savefig(
-        os.path.join(folder, "recall_vs_time.png"),
+        os.path.join(folder, f"avg_accuracy_{group_by}.png"),
         dpi=300,
         bbox_inches="tight"
     )
 
-    plt.clf()
+    plt.close()
 
+
+def plot_avg_time(df, folder, group_by):
+
+    grouped = df.groupby(group_by)["search_time"].mean().reset_index()
+
+    plt.figure(figsize=(7, 5))
+
+    plt.bar(grouped[group_by].astype(str), grouped["search_time"])
+
+    plt.xlabel(group_by)
+    plt.ylabel("Average Search Time (s)")
+    plt.title(f"Average Time vs {group_by}")
+    plt.grid(axis="y")
+
+    plt.savefig(
+        os.path.join(folder, f"avg_time_{group_by}.png"),
+        dpi=300,
+        bbox_inches="tight"
+    )
+
+    plt.close()
+"""
 
 def generate_plots_ann():
 
     df = load_data()
+    folder = create_experiment_folder()
 
-    experiment_folder = create_experiment_folder()
+    parameters = ["M", "efConstruction", "k"]
 
-    plot_time_vs_accuracy(df, experiment_folder)
-    plot_efsearch_vs_accuracy(df, experiment_folder)
-    plot_efsearch_vs_time(df, experiment_folder)
-    plot_recall_vs_time(df, experiment_folder)
+    for p in parameters:
 
-    print(f"Grafici salvati in: {experiment_folder}")
+        plot_recall_vs_time(df, folder, p)
+        plot_recall_vs_efsearch(df, folder, p)
+        plot_time_vs_efsearch(df, folder, p)
+        #plot_avg_accuracy(df, folder, p)
+        #plot_avg_time(df, folder, p)
+
+    print(f"Grafici salvati in: {folder}")
